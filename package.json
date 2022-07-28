@@ -1,0 +1,22 @@
+{
+  "name": "inquirer",
+  "version": "8.2.4",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ishan-Wijesingha99/Team-Profile-Generator-Node.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ishan-Wijesingha99/Team-Profile-Generator-Node.js/issues"
+  },
+  "homepage": "https://github.com/Ishan-Wijesingha99/Team-Profile-Generator-Node.js#readme",
+  "dependencies": {
+    "inquirer": "^8.2.4"
+  }
+}
