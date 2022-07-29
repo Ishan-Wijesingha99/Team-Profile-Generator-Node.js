@@ -120,7 +120,7 @@ const asyncPrompter = async function() {
             internP = await inquirer.prompt([
                 {
                     type: 'input',
-                    message: "Enter the Intern's name, employee ID, email address and school. Give your answers seperated by a comma. EG - Dylan Mark, 19897, dylanmark@gmail.com, dylan101",
+                    message: "Enter the Intern's name, employee ID, email address and school. Give your answers seperated by a comma. EG - Dylan Mark, 19897, dylanmark@gmail.com, Monash University",
                     name: 'internDetails' 
                 },
             ])
@@ -133,6 +133,13 @@ const asyncPrompter = async function() {
             condition = 'Finish'
 
             console.log(allRolesArray);
+
+            // this is where you create a html file and css file based off the roles 
+            
+
+
+
+
 
         }
 
