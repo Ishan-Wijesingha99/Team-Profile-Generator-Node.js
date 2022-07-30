@@ -15,6 +15,10 @@ let managerArray;
 let engineerArray;
 let internArray;
 
+let managerObject;
+let engineerObject;
+let internObject;
+
 let allRolesArray = [];
 let engineerP;
 let internP;
@@ -24,43 +28,6 @@ let internP;
 
 // // PUT ASYNC AWAIT INTO TRY-CATCH BLOCKS!!!
 
-//    // add another inquirer.prompt in here to collect data about engineer
-//    const asyncEngineerFunction = async function() {
-
-//     const p = await inquirer.prompt([
-//         {
-//             type: 'input',
-//             message: "Enter the Engineer's name, employee ID, email address and GitHub username. Give your answers seperated by a comma. EG - James Martin, 20119, jamesmartin@gmail.com, james99martin",
-//             name: 'engineerDetails' 
-//         },
-//     ]).then(engineerDetailsObject => {
-
-//         engineerArray = engineerDetailsObject.engineerDetails.split(', ')
-
-//         allRolesArray.push(engineerArray)
-        
-//     })
-
-// }
-
-
-// const asyncInternFunction = async function() {
-
-//     const p = await inquirer.prompt([
-//         {
-//             type: 'input',
-//             message: "Enter the Intern's name, employee ID, email address and school. Give your answers seperated by a comma. EG - Dylan Mark, 19897, dylanmark@gmail.com, dylan101",
-//             name: 'internDetails' 
-//         },
-//     ]).then(internDetailsObject => {
-
-//         internArray = internDetailsObject.internDetails.split(', ')
-
-//         allRolesArray.push(internArray)
-        
-//     })   
-
-// }
 
 
 
@@ -79,7 +46,9 @@ const asyncPrompter = async function() {
         // create array basef of managerDetailsObject
         managerArray = managerDetailsObject.managerDetails.split(', ')
         managerArray.push('Manager')
-        allRolesArray.push(managerArray);
+
+        managerObject = new Manager(managerArray[0], managerArray[1], managerArray[2], managerArray[3])
+        allRolesArray.push(managerObject);
         
     })
 
@@ -111,10 +80,14 @@ const asyncPrompter = async function() {
                 },
             ])
 
+            // using arrays
             engineerArray = engineerP.engineerDetails.split(', ')
-            engineerArray.push('Engineer')
 
-            allRolesArray.push(engineerArray)
+            // using classes and objects
+            engineerObject = new Engineer(engineerArray[0], engineerArray[1], engineerArray[2], engineerArray[3])
+
+
+            allRolesArray.push(engineerObject)
           
             
         } else if(p.userChoice === 'Intern') {
@@ -128,10 +101,15 @@ const asyncPrompter = async function() {
                 },
             ])
             
+            // using arrays
             internArray = internP.internDetails.split(', ')
-            internArray.push('Intern')
+            
 
-            allRolesArray.push(internArray)
+            // using classes and objects
+            internObject = new Intern(internArray[0], internArray[1], internArray[2], internArray[3])
+
+
+            allRolesArray.push(internObject)
             
         } else if(p.userChoice === 'Finish') {
             condition = 'Finish'
@@ -142,30 +120,20 @@ const asyncPrompter = async function() {
 
 
 
-            // function to output what position
-            const positionOutput = function(arrayOfSingleRole) {
-                const lastEntree = arrayOfSingleRole.slice(-1)
-
-                if(lastEntree[0] === 'Manager') {
-                    return 'Manager'
-                } else if(lastEntree[0] === 'Engineer') {
-                    return 'Enginner'
-                } else if(lastEntree[0] === 'Intern') {
-                    return 'Intern'
-                }
-            }
+           
 
             // function that outputs Office Number, GitHub, or School
-            const officeOrGithubOrSchool = function(arrayOfSingleRole) {
-                const lastEntree = arrayOfSingleRole.slice(-1)
+            const officeOrGithubOrSchool = function(roleObject) {
+                
 
-                if(lastEntree[0] === 'Manager') {
-                    return 'Office Number'
-                } else if(lastEntree[0] === 'Engineer') {
-                    return 'GitHub'
-                } else if(lastEntree[0] === 'Intern') {
-                    return 'School'
+                if(roleObject.getRole() === 'Manager') {
+                    return `Office Number - ${roleObject.officeNumber}`
+                } else if(roleObject.getRole() === 'Engineer') {
+                    return `GitHub - ${roleObject.github}`
+                } else if(roleObject.getRole() === 'Intern') {
+                    return `School - ${roleObject.school}`
                 }
+
             }
 
 
@@ -176,20 +144,20 @@ const asyncPrompter = async function() {
             let entireHTMLString = ''
 
             let cardHTMLoutput = function(rolesArray) {
-                rolesArray.forEach(eachArray => {
+                rolesArray.forEach(eachObject => {
                     entireHTMLString = entireHTMLString.concat(`
                     \n
                     <div class="card">
 
                         <div class="red-part">
-                            <p class="name">${eachArray[0]}</p>
-                            <p class="position">${positionOutput(eachArray)}</p> 
+                            <p class="name">${eachObject.fullName}</p>
+                            <p class="position">${eachObject.getRole()}</p> 
                         </div>
 
                         <div class="grey-part">
-                            <p class="id">ID - ${eachArray[1]}</p>
-                            <p class="email">Email - ${eachArray[2]}</p>
-                            <p class="office-github-school">${officeOrGithubOrSchool(eachArray)} - ${eachArray[3]}</p>
+                            <p class="id">ID - ${eachObject.id}</p>
+                            <p class="email">Email - ${eachObject.email}</p>
+                            <p class="office-github-school">${officeOrGithubOrSchool(eachObject)}</p>
                         </div>
 
                     </div>
@@ -204,7 +172,7 @@ const asyncPrompter = async function() {
 
 
             // this is where you create a html file and css file based off the roles 
-            writeFileSync('./dist/index2.html', `
+            writeFileSync('./dist/index.html', `
 <!DOCTYPE html>
 
 <html lang="en">
@@ -229,7 +197,7 @@ const asyncPrompter = async function() {
 </html>
             `)
 
-            writeFileSync('./dist/index2.css', `
+            writeFileSync('./dist/index.css', `
 * {
     padding: 0;
     margin: 0;
@@ -305,68 +273,5 @@ asyncPrompter()
 
 
 
-// while(condition !== 'Finish') {
 
-//     console.log('hello1')
-
-//     await asyncPrompter()
-
-//     console.log('hello2')
-
-//     if(answerObject.userChoice === 'Engineer') {
-//         condition = 'Engineer'
-//     } else if(answerObject.userChoice === 'Intern') {
-//         condition = 'Intern'
-//     } else if(answerObject.userChoice === 'Finish') {
-//         condition = 'Finish'
-//     }
-
-//     console.log('hello3')
-
-// }
-
-
-
-
-// inquirer.prompt([
-//     {
-//         type: 'list',
-//         choices: ['yeet1', 'yeet2', 'yeet3'],
-//         // message: "Enter the team manager's name, employee ID, email address, and office number. Give your answers seperated by commas",
-//         name: 'manager',
-//         loop: true
-//     }
-// ]).then(answer => {
-//     // make manager part in html
-//     console.log(answer)
-
-// })
-
-
-
-// while loop
-// can either be 'Engineer', 'Intern' or 'Finish'
-
-
-// while(condition !== 'Finish') {
-    
-//     inquirer.prompt([
-//         {
-//             type: 'list',
-//             choices: ['Engineer', 'Intern', 'Finish'],
-//             name: 'userChoice' 
-//         },
-    
-//     ]).then(answer => {
-//         if(answer.userChoice === 'Engineer') {
-//             condition = 'Engineer'
-//         } else if(answer.userChoice === 'Intern') {
-//             condition = 'Intern'
-//         } else if(answer.userChoice === 'Finish') {
-//             condition = 'Finish'
-//         }
-//     })
-
-
-// }
 
