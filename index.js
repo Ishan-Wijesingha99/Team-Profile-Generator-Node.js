@@ -10,7 +10,7 @@ const inquirer = require('inquirer');
 const { writeFileSync } = require('fs');
 
 let condition;
-let answerObject;
+
 let managerArray;
 let engineerArray;
 let internArray;
@@ -20,8 +20,8 @@ let engineerObject;
 let internObject;
 
 let allRolesArray = [];
-let engineerP;
-let internP;
+let engineerPromiseObject;
+let internPromiseObject;
 
 
 
@@ -38,14 +38,13 @@ const asyncPrompter = async function() {
     await inquirer.prompt([
         {
             type: 'input',
-            message: "Enter the team manager's name, employee ID, email address and office number. Give your answers seperated by a comma. EG - John Smith, 19983, johnsmith@gmail.com, 36",
+            message: "Enter the team manager's name, employee ID, email address and office number. Give your answers seperated by a comma. EG - John Smith, 19900, johnsmith@gmail.com, 36",
             name: 'managerDetails' 
         },
     ]).then(managerDetailsObject => {
 
-        // create array basef of managerDetailsObject
+        // create array based of managerDetailsObject
         managerArray = managerDetailsObject.managerDetails.split(', ')
-        managerArray.push('Manager')
 
         managerObject = new Manager(managerArray[0], managerArray[1], managerArray[2], managerArray[3])
         allRolesArray.push(managerObject);
@@ -56,13 +55,13 @@ const asyncPrompter = async function() {
 
 
 
-    while(condition !== 'Finish') {
+    while(condition !== 'Finalise') {
 
         const p = await inquirer.prompt([
             {
                 type: 'list',
-                choices: ['Engineer', 'Intern', 'Finish'],
-                message: 'add an Engineer or an Intern or finish',
+                choices: ['Engineer', 'Intern', 'Finalise'],
+                message: 'add an Engineer or an Intern or finalise',
                 name: 'userChoice' 
             },
         ])
@@ -72,16 +71,16 @@ const asyncPrompter = async function() {
         if(p.userChoice === 'Engineer') {
             condition = 'Engineer'
 
-            engineerP = await inquirer.prompt([
+            engineerPromiseObject = await inquirer.prompt([
                 {
                     type: 'input',
-                    message: "Enter the Engineer's name, employee ID, email address and GitHub username. Give your answers seperated by a comma. EG - James Martin, 20119, jamesmartin@gmail.com, james99martin",
+                    message: "Enter the Engineer's name, employee ID, email address and GitHub username. Give your answers seperated by a comma. EG - James Martin, 21000, jamesmartin@gmail.com, james99martin",
                     name: 'engineerDetails' 
                 },
             ])
 
-            // using arrays
-            engineerArray = engineerP.engineerDetails.split(', ')
+            // create array for answer given
+            engineerArray = engineerPromiseObject.engineerDetails.split(', ')
 
             // using classes and objects
             engineerObject = new Engineer(engineerArray[0], engineerArray[1], engineerArray[2], engineerArray[3])
@@ -93,7 +92,7 @@ const asyncPrompter = async function() {
         } else if(p.userChoice === 'Intern') {
             condition = 'Intern'
 
-            internP = await inquirer.prompt([
+            internPromiseObject = await inquirer.prompt([
                 {
                     type: 'input',
                     message: "Enter the Intern's name, employee ID, email address and school. Give your answers seperated by a comma. EG - Dylan Mark, 19897, dylanmark@gmail.com, Monash University",
@@ -102,30 +101,21 @@ const asyncPrompter = async function() {
             ])
             
             // using arrays
-            internArray = internP.internDetails.split(', ')
+            internArray = internPromiseObject.internDetails.split(', ')
             
 
             // using classes and objects
             internObject = new Intern(internArray[0], internArray[1], internArray[2], internArray[3])
-
-
             allRolesArray.push(internObject)
             
-        } else if(p.userChoice === 'Finish') {
-            condition = 'Finish'
+        } else if(p.userChoice === 'Finalise') {
+            condition = 'Finalise'
 
             console.log(allRolesArray);
-
-
-
-
-
-           
-
+            
             // function that outputs Office Number, GitHub, or School
             const officeOrGithubOrSchool = function(roleObject) {
                 
-
                 if(roleObject.getRole() === 'Manager') {
                     return `Office Number - ${roleObject.officeNumber}`
                 } else if(roleObject.getRole() === 'Engineer') {
@@ -136,38 +126,33 @@ const asyncPrompter = async function() {
 
             }
 
-
-
-
-
-            // function that loops through all the roles and outputs html all of those cards
+            // function that loops through all the roles and outputs html for all of those cards
             let entireHTMLString = ''
 
             let cardHTMLoutput = function(rolesArray) {
                 rolesArray.forEach(eachObject => {
                     entireHTMLString = entireHTMLString.concat(`
-                    \n
-                    <div class="card">
+        \n
+        <div class="card">
 
-                        <div class="red-part">
-                            <p class="name">${eachObject.fullName}</p>
-                            <p class="position">${eachObject.getRole()}</p> 
-                        </div>
+            <div class="red-part">
+                <p class="name">${eachObject.getName()}</p>
+                <p class="position">${eachObject.getRole()}</p> 
+            </div>
 
-                        <div class="grey-part">
-                            <p class="id">ID - ${eachObject.id}</p>
-                            <p class="email">Email - ${eachObject.email}</p>
-                            <p class="office-github-school">${officeOrGithubOrSchool(eachObject)}</p>
-                        </div>
+            <div class="grey-part">
+                <p class="id">ID - ${eachObject.getId()}</p>
+                <p class="email">Email - ${eachObject.getEmail()}</p>
+                <p class="office-github-school">${officeOrGithubOrSchool(eachObject)}</p>
+            </div>
 
-                    </div>
-                    \n
+        </div>
+        \n
                     `)
                 });
             }
 
             cardHTMLoutput(allRolesArray);
-
 
 
 
@@ -182,7 +167,7 @@ const asyncPrompter = async function() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Team Profile</title>
 
-        <link rel="stylesheet" href="./index2.css">
+        <link rel="stylesheet" href="./index.css">
 
         <script defer src="../index.js"></script>
     </head>
