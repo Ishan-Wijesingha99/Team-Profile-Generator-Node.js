@@ -1,3 +1,4 @@
+
 * {
     padding: 0;
     margin: 0;
@@ -12,7 +13,6 @@
     background-color: rgb(227, 93, 93);
     color: white;
     box-shadow: 0 4px 2px -2px black;
-    
 }
 
 .team-cards {
@@ -49,3 +49,4 @@
     border: 2px solid black;
     border-radius: 10px;
 }
+            

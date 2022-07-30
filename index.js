@@ -7,7 +7,7 @@ const {Manager} = require('./src/Manager')
 
 // import modules we need
 const inquirer = require('inquirer');
-const { writeFile } = require('fs');
+const { writeFileSync } = require('fs');
 
 let condition;
 let answerObject;
@@ -78,6 +78,8 @@ const asyncPrompter = async function() {
 
         // create array basef of managerDetailsObject
         managerArray = managerDetailsObject.managerDetails.split(', ')
+        managerArray.push('Manager')
+        allRolesArray.push(managerArray);
         
     })
 
@@ -110,6 +112,7 @@ const asyncPrompter = async function() {
             ])
 
             engineerArray = engineerP.engineerDetails.split(', ')
+            engineerArray.push('Engineer')
 
             allRolesArray.push(engineerArray)
           
@@ -126,6 +129,7 @@ const asyncPrompter = async function() {
             ])
             
             internArray = internP.internDetails.split(', ')
+            internArray.push('Intern')
 
             allRolesArray.push(internArray)
             
@@ -134,19 +138,157 @@ const asyncPrompter = async function() {
 
             console.log(allRolesArray);
 
+
+
+
+
+            // function to output what position
+            const positionOutput = function(arrayOfSingleRole) {
+                const lastEntree = arrayOfSingleRole.slice(-1)
+
+                if(lastEntree[0] === 'Manager') {
+                    return 'Manager'
+                } else if(lastEntree[0] === 'Engineer') {
+                    return 'Enginner'
+                } else if(lastEntree[0] === 'Intern') {
+                    return 'Intern'
+                }
+            }
+
+            // function that outputs Office Number, GitHub, or School
+            const officeOrGithubOrSchool = function(arrayOfSingleRole) {
+                const lastEntree = arrayOfSingleRole.slice(-1)
+
+                if(lastEntree[0] === 'Manager') {
+                    return 'Office Number'
+                } else if(lastEntree[0] === 'Engineer') {
+                    return 'GitHub'
+                } else if(lastEntree[0] === 'Intern') {
+                    return 'School'
+                }
+            }
+
+
+
+
+
+            // function that loops through all the roles and outputs html all of those cards
+            let entireHTMLString = ''
+
+            let cardHTMLoutput = function(rolesArray) {
+                rolesArray.forEach(eachArray => {
+                    entireHTMLString = entireHTMLString.concat(`
+                    \n
+                    <div class="card">
+
+                        <div class="red-part">
+                            <p class="name">${eachArray[0]}</p>
+                            <p class="position">${positionOutput(eachArray)}</p> 
+                        </div>
+
+                        <div class="grey-part">
+                            <p class="id">ID - ${eachArray[1]}</p>
+                            <p class="email">Email - ${eachArray[2]}</p>
+                            <p class="office-github-school">${officeOrGithubOrSchool(eachArray)} - ${eachArray[3]}</p>
+                        </div>
+
+                    </div>
+                    \n
+                    `)
+                });
+            }
+
+            cardHTMLoutput(allRolesArray);
+
+
+
+
             // this is where you create a html file and css file based off the roles 
-            
+            writeFileSync('./dist/index2.html', `
+<!DOCTYPE html>
 
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Team Profile</title>
 
+        <link rel="stylesheet" href="./index2.css">
 
+        <script defer src="../index.js"></script>
+    </head>
+    
+    <body>
+        <nav class="navbar">My Team</nav>
 
+        <section class="team-cards">
+            ${entireHTMLString}
+        </section>
+    </body>
+</html>
+            `)
+
+            writeFileSync('./dist/index2.css', `
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.navbar {
+    padding: 40px;
+    text-align: center;
+    font-size: 2rem;
+    background-color: rgb(227, 93, 93);
+    color: white;
+    box-shadow: 0 4px 2px -2px black;
+}
+
+.team-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+.card {
+    padding: 30px;
+    background-color: rgb(237, 232, 232);
+    margin: 10px;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px black;
+}
+
+.red-part {
+    background-color: rgb(227, 93, 93);
+    border: 2px solid black;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+}
+
+.id, .email, .office-github-school {
+    padding: 10px;
+    margin: 5px;
+    background-color: rgb(237, 232, 232);
+    border: 2px solid black;
+    border-radius: 10px;
+}
+            `)
 
         }
-
 
     }
 
 }
+
+
 
 asyncPrompter()
 
