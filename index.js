@@ -25,13 +25,6 @@ let internPromiseObject;
 
 
 
-
-// // PUT ASYNC AWAIT INTO TRY-CATCH BLOCKS!!!
-
-
-
-
-
 const asyncPrompter = async function() {
 
     // the first question is always about the manager
@@ -47,6 +40,7 @@ const asyncPrompter = async function() {
         managerArray = managerDetailsObject.managerDetails.split(', ')
 
         managerObject = new Manager(managerArray[0], managerArray[1], managerArray[2], managerArray[3])
+        
         allRolesArray.push(managerObject);
         
     })
