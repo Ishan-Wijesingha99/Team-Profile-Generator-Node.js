@@ -1,5 +1,5 @@
 // importing relevant class
-const { Employee } = require("../src/Employee");
+const { Employee } = require("../lib/Employee");
 
 // creating test object using class
 const testEmployee = new Employee('Ishan Wijesingha', '13000', 'ishanwijes@gmail.com')

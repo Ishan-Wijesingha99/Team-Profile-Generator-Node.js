@@ -1,6 +1,6 @@
 
 // importing relevant class
-const { Manager } = require("../src/Manager");
+const { Manager } = require("../lib/Manager");
 
 // creating test object using class
 const testManager = new Manager('Michael Jordan', '22000', 'mjordan@gmail.com', '19')
