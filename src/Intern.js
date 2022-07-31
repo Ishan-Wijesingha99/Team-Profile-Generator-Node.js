@@ -1,6 +1,8 @@
 
+// importing Employee class
 const {Employee} = require('./Employee')
 
+// extending Employee class to create Intern class
 class Intern extends Employee {
     constructor(fullName, id, email, school) {
         super(fullName, id, email)
@@ -16,5 +18,5 @@ class Intern extends Employee {
     }
 }
 
-
+// exporting Intern class
 module.exports = {Intern}

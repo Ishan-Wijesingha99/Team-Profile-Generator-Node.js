@@ -1,10 +1,13 @@
 
+// importing relevant class
 const { Manager } = require("../src/Manager");
 
+// creating test object using class
 const testManager = new Manager('Michael Jordan', '22000', 'mjordan@gmail.com', '19')
 
 
 
+// testing the methods of the test object
 describe('Manager class, testing methods', () => {
 
     it('should return the role', () => {

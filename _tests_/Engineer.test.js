@@ -1,10 +1,13 @@
 
+// importing relevant class
 const { Engineer } = require("../src/Engineer");
 
+// creating test object using class
 const testEngineer = new Engineer('Tom Hamilton', '19000', 'thomas@gmail.com', 'TomCodes99')
 
 
 
+// testing the methods of the test object
 describe('Engineer class, testing methods', () => {
 
     it('should return the role', () => {

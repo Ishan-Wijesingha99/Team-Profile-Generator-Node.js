@@ -26,7 +26,7 @@ let internPromiseObject;
 
 
 
-
+// If a team member is a manager, they will have an office number. If a team member is an engineer, they will have a GitHub username. If a team member is an intern, they will have a school. Create a function for these different options
 const officeOrGithubOrSchool = function(roleObject) {
                 
     if(roleObject.getRole() === 'Manager') {
@@ -41,32 +41,9 @@ const officeOrGithubOrSchool = function(roleObject) {
 
 
 
-let cardHTMLoutput = function(rolesArray) {
-    rolesArray.forEach(eachObject => {
-        entireHTMLString = entireHTMLString.concat(`
-\n
-<div class="card">
-
-<div class="red-part">
-    <p class="name">${eachObject.getName()}</p>
-    <p class="position">${eachObject.getRole()}</p> 
-</div>
-
-<div class="grey-part">
-    <p class="id">ID - ${eachObject.getId()}</p>
-    <p class="email">Email - ${eachObject.getEmail()}</p>
-    <p class="office-github-school">${officeOrGithubOrSchool(eachObject)}</p>
-</div>
-
-</div>
-\n
-        `)
-    });
-}
 
 
-
-
+// in order to use async-await, we must put all the code we wish to execute inside an async function
 const asyncPrompter = async function() {
 
     // the first question is always about the manager
@@ -81,18 +58,20 @@ const asyncPrompter = async function() {
         // create array based of managerDetailsObject
         managerArray = managerDetailsObject.managerDetails.split(', ')
 
+        // create an instance of the Manager class, based off the values in the array
         managerObject = new Manager(managerArray[0], managerArray[1], managerArray[2], managerArray[3])
         
+        // push this instance into the allRolesArray
         allRolesArray.push(managerObject);
         
     })
 
 
 
-
-
+    // to allow the user to add as many team members as they want, we must utilise a while-loop. This while-loop will keep running until the user finalises the team
     while(condition !== 'Finalise') {
 
+        // user is asked whether they want to add an Engineer or Intern to the team, or finalise the team
         const p = await inquirer.prompt([
             {
                 type: 'list',
@@ -105,8 +84,12 @@ const asyncPrompter = async function() {
 
 
         if(p.userChoice === 'Engineer') {
+            // if the user chose to add an Engineer, execute this code
+
+            // change condition to Engineer
             condition = 'Engineer'
 
+            // collect details about the team member from the user in the terminal
             engineerPromiseObject = await inquirer.prompt([
                 {
                     type: 'input',
@@ -118,16 +101,19 @@ const asyncPrompter = async function() {
             // create array for answer given
             engineerArray = engineerPromiseObject.engineerDetails.split(', ')
 
-            // using classes and objects
+            // create an instance from the Engineer class based off the array
             engineerObject = new Engineer(engineerArray[0], engineerArray[1], engineerArray[2], engineerArray[3])
 
-
+            // push this instance into the allRolesArray
             allRolesArray.push(engineerObject)
-          
             
         } else if(p.userChoice === 'Intern') {
+            // if user chose to add an Intern, execute this code
+
+            // change condition to Intern
             condition = 'Intern'
 
+            // collect details about the team member from the user in the terminal
             internPromiseObject = await inquirer.prompt([
                 {
                     type: 'input',
@@ -136,22 +122,25 @@ const asyncPrompter = async function() {
                 },
             ])
             
-            // using arrays
+            // create array for answer given
             internArray = internPromiseObject.internDetails.split(', ')
             
-
-            // using classes and objects
+            // create an instance from the Intern class based off the array
             internObject = new Intern(internArray[0], internArray[1], internArray[2], internArray[3])
+
+            // push this instance into the allRolesArray
             allRolesArray.push(internObject)
             
         } else if(p.userChoice === 'Finalise') {
-            condition = 'Finalise'
+            // if user chose to finalise the team, execute this code
 
-            console.log(allRolesArray);
+            // change condition to Finalise
+            condition = 'Finalise'
             
-            // function that loops through all the roles and outputs html for all of those cards
+            // initialise an empty string
             let entireHTMLString = ''
 
+            // function that loops through all the objects in the allRolesArray and outputs html for all of them
             let cardHTMLoutput = function(rolesArray) {
                 rolesArray.forEach(eachObject => {
                     entireHTMLString = entireHTMLString.concat(`
@@ -175,11 +164,12 @@ const asyncPrompter = async function() {
                 });
             }
 
+            // call function so that entireHTMLString has HTML for all team members
             cardHTMLoutput(allRolesArray);
 
 
 
-            // this is where you create a html file and css file based off the roles 
+            // write a html file based off the roles given by the user 
             writeFileSync('./dist/index.html', `
 <!DOCTYPE html>
 
@@ -205,6 +195,8 @@ const asyncPrompter = async function() {
 </html>
             `)
 
+
+            // write a css file based off the roles given by the user
             writeFileSync('./dist/index.css', `
 * {
     padding: 0;
@@ -266,6 +258,7 @@ const asyncPrompter = async function() {
 
 
 
+// call function
 asyncPrompter()
 
 
