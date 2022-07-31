@@ -9,6 +9,7 @@ const {Manager} = require('./src/Manager')
 const inquirer = require('inquirer');
 const { writeFileSync } = require('fs');
 
+// initialising variables
 let condition;
 
 let managerArray;
@@ -22,6 +23,47 @@ let internObject;
 let allRolesArray = [];
 let engineerPromiseObject;
 let internPromiseObject;
+
+
+
+
+const officeOrGithubOrSchool = function(roleObject) {
+                
+    if(roleObject.getRole() === 'Manager') {
+        return `Office Number - ${roleObject.officeNumber}`
+    } else if(roleObject.getRole() === 'Engineer') {
+        return `GitHub - ${roleObject.github}`
+    } else if(roleObject.getRole() === 'Intern') {
+        return `School - ${roleObject.school}`
+    }
+
+}
+
+
+
+let cardHTMLoutput = function(rolesArray) {
+    rolesArray.forEach(eachObject => {
+        entireHTMLString = entireHTMLString.concat(`
+\n
+<div class="card">
+
+<div class="red-part">
+    <p class="name">${eachObject.getName()}</p>
+    <p class="position">${eachObject.getRole()}</p> 
+</div>
+
+<div class="grey-part">
+    <p class="id">ID - ${eachObject.getId()}</p>
+    <p class="email">Email - ${eachObject.getEmail()}</p>
+    <p class="office-github-school">${officeOrGithubOrSchool(eachObject)}</p>
+</div>
+
+</div>
+\n
+        `)
+    });
+}
+
 
 
 
@@ -107,19 +149,6 @@ const asyncPrompter = async function() {
 
             console.log(allRolesArray);
             
-            // function that outputs Office Number, GitHub, or School
-            const officeOrGithubOrSchool = function(roleObject) {
-                
-                if(roleObject.getRole() === 'Manager') {
-                    return `Office Number - ${roleObject.officeNumber}`
-                } else if(roleObject.getRole() === 'Engineer') {
-                    return `GitHub - ${roleObject.github}`
-                } else if(roleObject.getRole() === 'Intern') {
-                    return `School - ${roleObject.school}`
-                }
-
-            }
-
             // function that loops through all the roles and outputs html for all of those cards
             let entireHTMLString = ''
 
