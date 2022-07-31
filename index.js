@@ -1,9 +1,9 @@
 
 // importing relevant classes
-const {Employee} = require('./src/Employee')
-const {Engineer} = require('./src/Engineer')
-const {Intern} = require('./src/Intern')
-const {Manager} = require('./src/Manager')
+const {Employee} = require('./lib/Employee')
+const {Engineer} = require('./lib/Engineer')
+const {Intern} = require('./lib/Intern')
+const {Manager} = require('./lib/Manager')
 
 // import modules we need
 const inquirer = require('inquirer');
@@ -154,8 +154,8 @@ const asyncPrompter = async function() {
 
             <div class="grey-part">
                 <p class="id">ID - ${eachObject.getId()}</p>
-                <p class="email">Email - ${eachObject.getEmail()}</p>
-                <p class="office-github-school">${officeOrGithubOrSchool(eachObject)}</p>
+                <a class="email" href="mailto:${eachObject.getEmail()}">Email - ${eachObject.getEmail()}</a>
+                <a class="office-github-school" ${eachObject.getRole() === 'Engineer' ? `href="https://github.com/${eachObject.github}" target="_blank"`: 'style="text-decoration:none;"'}>${officeOrGithubOrSchool(eachObject)}</a>
             </div>
 
         </div>
@@ -247,6 +247,10 @@ const asyncPrompter = async function() {
     background-color: rgb(237, 232, 232);
     border: 2px solid black;
     border-radius: 10px;
+}
+
+a {
+    display: block;
 }
             `)
 
